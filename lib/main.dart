@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:login/pages/login.dart';
 import 'package:login/pages/login_page.dart';
+import 'package:login/pages/register.dart';
+import 'package:login/pages/register1.dart';
+import 'package:login/pages/register2.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -10,7 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login Screen',
+      // title: 'Login Screen',
+
       debugShowCheckedModeBanner: false,
 
       //theme
@@ -21,13 +27,13 @@ class MyApp extends StatelessWidget {
           elevation: 0,
           foregroundColor: Colors.white,
         ),
-        accentColor: Colors.redAccent,
+        accentColor: Colors.blue,
         textTheme: TextTheme(
           headline1: TextStyle(fontSize: 22.0, color: Colors.redAccent),
           headline2: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.w700,
-            color: Colors.redAccent,
+            color: Colors.blue,
           ),
           bodyText1: TextStyle(
             fontSize: 14.0,
@@ -37,7 +43,15 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: LoginPage(),
+       // home: Scaffold(
+       //      appBar: AppBar(title: Text('coupON')),
+       //      body: Center(
+       //          child: LoginPage()
+       //      )
+       //  )
+      home: Login(),
+      //home: SignupPage1(),
+
     );
   }
 }

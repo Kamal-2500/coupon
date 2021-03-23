@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:login/api/login_api.dart';
 import 'package:login/model/login_model.dart';
+import 'package:login/pages/register.dart';
+import 'package:login/pages/register1.dart';
+
 
 import '../progressHUD.dart';
 
@@ -18,20 +21,19 @@ class _LoginPageState extends State<LoginPage> {
   bool isApiCallProcess = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     requestModel = new LoginRequestModel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHUD(child: uiSetup(context),
-    inAsyncCall: isApiCallProcess,
+    return ProgressHUD(
+      child: uiSetup(context),
+      inAsyncCall: isApiCallProcess,
       opacity: 0.3,
     );
-
   }
-
 
   @override
   Widget uiSetup(BuildContext context) {
@@ -149,15 +151,15 @@ class _LoginPageState extends State<LoginPage> {
 
                       //Login Button
                       SizedBox(
-                        height: 30,
+                        height: 25,
                       ),
                       FlatButton(
                         padding: EdgeInsets.symmetric(
                           vertical: 12,
                           horizontal: 80,
                         ),
-                        onPressed: (){
-                          if(validateAndSave()){
+                        onPressed: () {
+                          if (validateAndSave()) {
                             setState(() {
                               isApiCallProcess = true;
                             });
@@ -168,25 +170,47 @@ class _LoginPageState extends State<LoginPage> {
                                 isApiCallProcess = false;
                               });
 
-                              if(value.token.isNotEmpty){
+                              if (value.token.isNotEmpty) {
                                 final snackBar = SnackBar(
                                   content: Text("Login Successfull"),
                                 );
                                 scaffoldkey.currentState.showSnackBar(snackBar);
-                              }else{
-                                final snackBar = SnackBar(content: Text(value.error),
+                              } else {
+                                final snackBar = SnackBar(
+                                  content: Text(value.error),
                                 );
                                 scaffoldkey.currentState.showSnackBar(snackBar);
                               }
                             });
 
                             print(requestModel.toJson());
+                            // _navigateToNextScreen(context);
                           }
                         },
-                        child: Text("Login", style: TextStyle(color: Colors.white),),
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         color: Theme.of(context).accentColor,
                         shape: StadiumBorder(),
-                      )
+                      ),
+
+                      //Signup Link
+                      SizedBox(
+                        height: 5,
+                      ),
+                      FlatButton(
+                        textColor: Colors.blue,
+                        child: Text(
+                          'Sign up',
+                          style: TextStyle(fontSize: 12,
+                          color: Colors.blue),
+                        ),
+                        onPressed: (){
+                          _navigateToNextScreen(context);
+                        },
+
+                      ),
                     ],
                   ),
                 ),
@@ -198,12 +222,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  bool validateAndSave(){
+  void _navigateToNextScreen(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => Register1()));
+  }
+
+  bool validateAndSave() {
     final form = globalFormKey.currentState;
-    if(form.validate()){
+    if (form.validate()) {
       form.save();
       return true;
+    } else {
+      return false;
     }
-    else{return false;}
   }
 }
