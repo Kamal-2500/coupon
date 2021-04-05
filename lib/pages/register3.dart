@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:login/pages/login_page.dart';
+import 'package:login/pages/login.dart';
 import 'globals.dart' as global;
 import 'globals.dart';
 
@@ -274,5 +274,5 @@ class _RegisterState3 extends State<Register3>{
 }
 
 void _navigateToNextScreen(BuildContext context) {
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage() ));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login() ));
 }

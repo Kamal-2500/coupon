@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:login/pages/homepage.dart';
 import 'package:login/pages/login.dart';
-import 'package:login/pages/login_page.dart';
 import 'package:login/pages/register.dart';
 import 'package:login/pages/register1.dart';
 import 'package:login/pages/register2.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
        //          child: LoginPage()
        //      )
        //  )
-      home: Login(),
+      home: HomePage(),
       //home: SignupPage1(),
 
     );
