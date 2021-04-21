@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:login/pages/calender.dart';
 import 'package:login/pages/homepage.dart';
 import 'package:login/pages/login.dart';
 import 'package:login/pages/register.dart';
 import 'package:login/pages/register1.dart';
 import 'package:login/pages/register2.dart';
+import 'package:login/pages/scan_test.dart';
 
 
 void main() {
@@ -11,7 +13,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,14 +44,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-       // home: Scaffold(
-       //      appBar: AppBar(title: Text('coupON')),
-       //      body: Center(
-       //          child: LoginPage()
-       //      )
-       //  )
+
       home: HomePage(),
-      //home: SignupPage1(),
 
     );
   }

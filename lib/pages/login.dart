@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:login/pages/homepage.dart';
 import 'package:login/pages/register1.dart';
 
 import '../progressHUD.dart';
@@ -97,7 +98,7 @@ class _LoginState extends State<Login>{
             FlatButton(
               child: new Text("OK"),
               onPressed: () {
-                Navigator.of(context).pop();
+                _navigateToHomePage(context);
               },
             ),
           ],
@@ -300,4 +301,8 @@ class _LoginState extends State<Login>{
 void _navigateToNextScreen(BuildContext context) {
   Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => Register1()));
+}
+void _navigateToHomePage(BuildContext context) {
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => HomePage()));
 }

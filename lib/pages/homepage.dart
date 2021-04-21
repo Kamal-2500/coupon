@@ -1,9 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:login/pages/createcoupon.dart';
+import 'package:login/pages/scan.dart';
+import 'package:barcode_scan_fix/barcode_scan.dart';
 
-void main() => runApp(HomePage());
+class HomePage extends StatefulWidget{
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-class HomePage extends StatelessWidget {
+class _HomePageState extends State<HomePage>{
+  String QRCodeResult = "";
+
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() => this.QRCodeResult = barcode);
+      // print(QRCodeResult);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(QRCodeResult),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => HomePage()));
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          this.QRCodeResult = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this.QRCodeResult = 'Unknown error: $e');
+      }
+    } on FormatException{
+      setState(() => this.QRCodeResult = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => this.QRCodeResult = 'Unknown error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -156,8 +202,14 @@ class HomePage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 40, 10.0, 0.0),
                       child: InkWell(
-                        onTap: () {
-                          // Navigator.push(context, new MaterialPageRoute(builder: (context)=>two()),);
+                        onTap: ()  {
+                          scan();
+                          // String codeSanner = await BarcodeScanner.scan();
+                          //String codeSanner = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
+                          // setState(() {
+                          //   QRCodeResult = codeSanner;
+                          // });
+                          // Navigator.push(context, new MaterialPageRoute(builder: (context)=>Scan()),);
                           //Navigator.push(context, new MaterialPageRoute(builder: (context)=>two()),);
                         },
                         child: Container(
@@ -259,4 +311,5 @@ class HomePage extends StatelessWidget {
               // )
             )));
   }
+
 }
