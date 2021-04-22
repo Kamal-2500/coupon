@@ -204,13 +204,6 @@ class _HomePageState extends State<HomePage>{
                       child: InkWell(
                         onTap: ()  {
                           scan();
-                          // String codeSanner = await BarcodeScanner.scan();
-                          //String codeSanner = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
-                          // setState(() {
-                          //   QRCodeResult = codeSanner;
-                          // });
-                          // Navigator.push(context, new MaterialPageRoute(builder: (context)=>Scan()),);
-                          //Navigator.push(context, new MaterialPageRoute(builder: (context)=>two()),);
                         },
                         child: Container(
                           width: 100.0,

@@ -12,6 +12,9 @@ class CreateCoupon extends StatefulWidget {
 // String _chosenValue;
 class _CreateCouponState extends State<CreateCoupon> {
   String _chosenValue;
+  bool visibilityOnFirst = false;
+  bool visibilityOnSecond = false;
+  bool visibilityOnThird = false;
   String selectedDate = "Expiry Date";
   var customFormat = DateFormat('dd-MM-yyyy');
   var sd = DateFormat('dd-MM-yyyy');
@@ -63,9 +66,9 @@ class _CreateCouponState extends State<CreateCoupon> {
                 children: <Widget>[
                   Container(
                     width: double.maxFinite,
-                    padding: const EdgeInsets.fromLTRB(40, 0.0, 10.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(100.0, 10.0, 10.0, 10.0),
                     // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         // color: Colors.blueAccent,
@@ -107,6 +110,27 @@ class _CreateCouponState extends State<CreateCoupon> {
                       onChanged: (String value) {
                         setState(() {
                           _chosenValue = value;
+                          switch(value) {
+                            case "Buy Get Free":
+                              visibilityOnFirst = true;
+                              visibilityOnSecond = false;
+                              visibilityOnThird = false;
+                              break;
+                            case "Flat ₹ Off":
+                              visibilityOnFirst = false;
+                              visibilityOnSecond = true;
+                              visibilityOnThird = false;
+                              break;
+                            case "Upto % Discount":
+                              visibilityOnFirst = false;
+                              visibilityOnSecond = false;
+                              visibilityOnThird = true;
+                              break;
+                            default:
+                              visibilityOnFirst = false;
+                              visibilityOnSecond = false;
+                              visibilityOnThird = false;
+                          }
                         });
                       },
                     ),
@@ -117,7 +141,7 @@ class _CreateCouponState extends State<CreateCoupon> {
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(10, 10.0, 10.0, 20.0),
                 // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                margin: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+                margin: EdgeInsets.symmetric(vertical: 130, horizontal: 20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     // color: Colors.blueAccent,
@@ -141,43 +165,41 @@ class _CreateCouponState extends State<CreateCoupon> {
                       ),
 
                       //Buy get free
-                      SizedBox(
-                        height: 20,
-                      ),
-                      new TextFormField(
-                        keyboardType: TextInputType.text,
-                        // controller: shopnameController,
-                        // validator: (input) => input.length < 3
-                        //     ? "Password should be more than 3 characters"
-                        //     : null,
-                        // obscureText: hidePassword,
-                        decoration: new InputDecoration(
-                          hintText: "    Product Name",
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context)
-                                  .accentColor
-                                  .withOpacity(0.2),
+                      Visibility(
+                        child : SizedBox(
+                          height: 60,
+                        child : new TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.all(20.0),
+                            hintText: "Product Name",
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(0.2),
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).accentColor,
+                              ),
                             ),
                           ),
                         ),
+                        ),
+                        visible: visibilityOnFirst ? true : false,
                       ),
-
                       //Flat rs. off & discount
                       SizedBox(
-                        height: 20,
-                      ),
-                      new TextFormField(
+                        height: 60,
+                        child : new TextFormField(
                         keyboardType: TextInputType.text,
                         // controller: fnameController,
                         decoration: new InputDecoration(
+                          contentPadding: EdgeInsets.all(20.0),
                           // hintText: "Last Name",
-                          hintText: "    Amount",
+                          hintText: "Amount",
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Theme.of(context)
@@ -192,40 +214,43 @@ class _CreateCouponState extends State<CreateCoupon> {
                           ),
                         ),
                       ),
-
-                      //Flat rs. off
-                      SizedBox(
-                        height: 20,
                       ),
-                      new TextFormField(
-                        keyboardType: TextInputType.text,
-                        // controller: lnameController,
-                        decoration: new InputDecoration(
-                          hintText: "    Flat Amount",
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context)
-                                  .accentColor
-                                  .withOpacity(0.2),
+                      Visibility(
+                        //upto % discount
+                      child : SizedBox(
+                        height: 60,
+                        child: new TextFormField(
+                          keyboardType: TextInputType.text,
+                          // controller: lnameController,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.all(20.0),
+                            hintText: "Flat Amount",
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(0.2),
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).accentColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
-
-                      //upto % discount
-                      SizedBox(
-                        height: 20,
+                        visible: visibilityOnSecond ? true : false,
                       ),
-                      new TextFormField(
+                      Visibility(
+                      child : SizedBox(
+                        height: 60,
+                        child : new TextFormField(
                         keyboardType: TextInputType.text,
                         // controller: phoneController,
                         decoration: new InputDecoration(
-                          hintText: "    Discount",
+                          contentPadding: EdgeInsets.all(20.0),
+                          hintText: "Discount",
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Theme.of(context)
@@ -240,12 +265,9 @@ class _CreateCouponState extends State<CreateCoupon> {
                           ),
                         ),
                       ),
-
-                      //Exp_date
-                      SizedBox(
-                        height: 20,
                       ),
-
+                        visible: visibilityOnThird ? true : false,
+                      ),
                       new Container(
                         width: double.maxFinite,
 
@@ -262,25 +284,28 @@ class _CreateCouponState extends State<CreateCoupon> {
                         ),
                         // child: new RaisedButton(color: Colors.red,
                         //     onPressed: null),
-                        child: RaisedButton(
-                          elevation: 0,
-                          hoverElevation: 0,
-                          focusElevation: 0,
-                          highlightElevation: 0,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "${selectedDate}",
-                              // "Expiry Date",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black.withOpacity(0.6)),
+                        child: SizedBox(
+                          height : 60,
+                          child : RaisedButton(
+                            elevation: 0,
+                            hoverElevation: 0,
+                            focusElevation: 0,
+                            highlightElevation: 0,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "${selectedDate}",
+                                // "Expiry Date",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black.withOpacity(0.6)),
+                              ),
                             ),
+                            textColor: Colors.grey,
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () => {showPicker(context)},
                           ),
-                          textColor: Colors.grey,
-                          color: Theme.of(context).primaryColor,
-                          onPressed: () => {showPicker(context)},
                         ),
                       ),
 
@@ -350,50 +375,54 @@ class _CreateCouponState extends State<CreateCoupon> {
 
                       //description
                       SizedBox(
-                        height: 20,
-                      ),
-                      new TextFormField(
-                        keyboardType: TextInputType.text,
-                        // controller: phoneController,
-                        decoration: new InputDecoration(
-                          hintText: "    Description",
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context)
-                                  .accentColor
-                                  .withOpacity(0.2),
+                        height: 100,
+                        child : new TextFormField(
+                          keyboardType: TextInputType.multiline,
+                          minLines: 2,
+                          maxLines: 5,
+                          // controller: phoneController,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.all(20.0),
+                            hintText: "Description",
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(0.2),
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).accentColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
 
-                      //Add
-                      // SizedBox(
-                      //   height: 25,
-                      // ),
-                      // FlatButton(
-                      //   padding: EdgeInsets.symmetric(
-                      //     vertical: 12,
-                      //     horizontal: 80,
-                      //   ),
-                      //   onPressed: (){
-                      //     // userRegistration();
-                      //     // _navigateToNextScreen(context);
-                      //   },
-                      //   // onPressed: userRegistration,
-                      //
-                      //   child: Text(
-                      //     "Add",
-                      //     style: TextStyle(color: Colors.white),
-                      //   ),
-                      //   color: Theme.of(context).accentColor,
-                      //   shape: StadiumBorder(),
-                      // ),
+                      //create
+                      SizedBox(
+                        height: 60,
+                        child: FlatButton(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 80,
+                          ),
+                          onPressed: (){
+                            // userRegistration();
+                            // _navigateToNextScreen(context);
+                          },
+                          // onPressed: userRegistration,
+
+                          child: Text(
+                            "Create",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Theme.of(context).accentColor,
+                          shape: StadiumBorder(),
+                        ),
+
+                      ),
 
                       // Visibility(
                       //     // visible: visible,

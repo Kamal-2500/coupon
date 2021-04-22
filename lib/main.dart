@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login/pages/calender.dart';
+import 'package:login/pages/createcoupon.dart';
 import 'package:login/pages/homepage.dart';
 import 'package:login/pages/login.dart';
 import 'package:login/pages/register.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       ),
 
 
-      home: HomePage(),
+      home: CreateCoupon(),
 
     );
   }
