@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:ui';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,17 @@ class CreateCoupon extends StatefulWidget {
 
 // String _chosenValue;
 class _CreateCouponState extends State<CreateCoupon> {
+
+  bool visible = false ;
+
+  // Getting value from TextField widget.
+  final  product_nameController = TextEditingController();
+  final amountController = TextEditingController();
+  final flat_amountController = TextEditingController();
+  final discountController = TextEditingController();
+  final exp_dateController = TextEditingController();
+  final descriptionController = TextEditingController();
+
   String _chosenValue;
   bool visibilityOnFirst = false;
   bool visibilityOnSecond = false;
@@ -31,6 +43,63 @@ class _CreateCouponState extends State<CreateCoupon> {
         // selectedDate = picked;
         selectedDate = "" + customFormat.format(picked);
       });
+  }
+
+  Future userRegistration() async{
+
+    // Showing CircularProgressIndicator.
+    setState(() {
+      visible = true ;
+    });
+
+    // Getting value from Controller
+    String product_name = product_nameController.text;
+    String amount = amountController.text;
+    String flat_amount = flat_amountController.text;
+    String discount = discountController.text;
+
+    String description = descriptionController.text;
+
+
+    // SERVER API URL
+    // https://couponkml.000webhostapp.com/
+    var url = 'https://couponkml.000webhostapp.com/coupon.php';
+
+    // Store all data with Param Name.
+    var data = {'product_name': product_name,'amount': amount,'flat_amount': flat_amount,'discount':discount,'exp_date': selectedDate, 'description' : description,'type': _chosenValue};
+    // var data = {'shopname': shopname, 'fname': fname, 'lname' : lname};
+
+    // Starting Web API Call.
+    var response = await http.post(url, body: json.encode(data));
+
+    // Getting Server response into variable.
+    var message = jsonDecode(response.body);
+
+    // If Web call Success than Hide the CircularProgressIndicator.
+    if(response.statusCode == 200){
+      setState(() {
+        visible = false;
+      });
+    }
+
+    // Showing Alert Dialog with Response JSON Message.
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+
   }
 
   @override
@@ -164,12 +233,13 @@ class _CreateCouponState extends State<CreateCoupon> {
                         style: Theme.of(context).textTheme.headline2,
                       ),
 
-                      //Buy get free
+                      //Product name
                       Visibility(
                         child : SizedBox(
                           height: 60,
                         child : new TextFormField(
                           keyboardType: TextInputType.text,
+                          controller: product_nameController,
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.all(20.0),
                             hintText: "Product Name",
@@ -190,12 +260,13 @@ class _CreateCouponState extends State<CreateCoupon> {
                         ),
                         visible: visibilityOnFirst ? true : false,
                       ),
-                      //Flat rs. off & discount
+
+                      //amount
                       SizedBox(
                         height: 60,
                         child : new TextFormField(
                         keyboardType: TextInputType.text,
-                        // controller: fnameController,
+                          controller: amountController,
                         decoration: new InputDecoration(
                           contentPadding: EdgeInsets.all(20.0),
                           // hintText: "Last Name",
@@ -216,12 +287,13 @@ class _CreateCouponState extends State<CreateCoupon> {
                       ),
                       ),
                       Visibility(
-                        //upto % discount
+
+                        //flat amount
                       child : SizedBox(
                         height: 60,
                         child: new TextFormField(
                           keyboardType: TextInputType.text,
-                          // controller: lnameController,
+                          controller: flat_amountController,
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.all(20.0),
                             hintText: "Flat Amount",
@@ -242,12 +314,14 @@ class _CreateCouponState extends State<CreateCoupon> {
                       ),
                         visible: visibilityOnSecond ? true : false,
                       ),
+
+                      //discount
                       Visibility(
                       child : SizedBox(
                         height: 60,
                         child : new TextFormField(
                         keyboardType: TextInputType.text,
-                        // controller: phoneController,
+                        controller: discountController,
                         decoration: new InputDecoration(
                           contentPadding: EdgeInsets.all(20.0),
                           hintText: "Discount",
@@ -309,70 +383,6 @@ class _CreateCouponState extends State<CreateCoupon> {
                         ),
                       ),
 
-                      // new RaisedButton(
-                      //   // textColor: Colors.white,
-                      //
-                      //   color: Theme.of(context).primaryColor,
-                      //   elevation: 0,
-                      //   hoverElevation: 0,
-                      //   focusElevation: 0,
-                      //   highlightElevation: 0,
-                      //
-                      //   child: Container(
-                      //
-                      //       decoration: BoxDecoration (
-                      //
-                      //         border: Border(
-                      //           bottom: BorderSide(
-                      //             width: 1,
-                      //             color: Theme.of(context).accentColor.withOpacity(0.2)
-                      //           ),
-                      //         ),
-                      //
-                      //
-                      //       ),
-                      //       width: double.maxFinite,
-                      //       padding: const EdgeInsets.fromLTRB(0, 10.0, 0.0, 15.0),
-                      //       child: Text(
-                      //         "Expiry Date",
-                      //         // textAlign: TextAlign.left,
-                      //       )),
-                      //   onPressed: () {
-                      //
-                      //   },
-                      // ),
-                      // new TextFormField(
-                      //
-                      //   keyboardType: TextInputType.datetime,
-                      //   // controller: phoneController,
-                      //   decoration: new InputDecoration(
-                      //     hintText: "Expiry Date",
-                      //
-                      //     enabledBorder: UnderlineInputBorder(
-                      //       borderSide: BorderSide(
-                      //         color: Theme.of(context)
-                      //             .accentColor
-                      //             .withOpacity(0.2),
-                      //       ),
-                      //     ),
-                      //     suffixIcon: IconButton(
-                      //       onPressed: () {
-                      //         showPicker(context);
-                      //       },
-                      //       color: Theme.of(context).accentColor,
-                      //       icon: Icon(
-                      //             Icons.calendar_today_outlined,
-                      //       ),
-                      //     ),
-                      //
-                      //     focusedBorder: UnderlineInputBorder(
-                      //       borderSide: BorderSide(
-                      //         color: Theme.of(context).accentColor,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-
                       //description
                       SizedBox(
                         height: 100,
@@ -380,7 +390,7 @@ class _CreateCouponState extends State<CreateCoupon> {
                           keyboardType: TextInputType.multiline,
                           minLines: 2,
                           maxLines: 5,
-                          // controller: phoneController,
+                          controller: descriptionController,
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.all(20.0),
                             hintText: "Description",
@@ -402,14 +412,14 @@ class _CreateCouponState extends State<CreateCoupon> {
 
                       //create
                       SizedBox(
-                        height: 60,
-                        child: FlatButton(
+                        height: 25,),
+                        FlatButton(
                           padding: EdgeInsets.symmetric(
                             vertical: 12,
                             horizontal: 80,
                           ),
                           onPressed: (){
-                            // userRegistration();
+                            userRegistration();
                             // _navigateToNextScreen(context);
                           },
                           // onPressed: userRegistration,
@@ -422,29 +432,20 @@ class _CreateCouponState extends State<CreateCoupon> {
                           shape: StadiumBorder(),
                         ),
 
+                      Visibility(
+                          visible: visible,
+                          child: Container(
+                              margin: EdgeInsets.only(bottom: 30),
+                              child: CircularProgressIndicator()
+                          )
                       ),
 
-                      // Visibility(
-                      //     // visible: visible,
-                      //     child: Container(
-                      //         margin: EdgeInsets.only(bottom: 30),
-                      //         child: CircularProgressIndicator()
-                      //     )
-                      // ),
+
+
                     ],
                   ),
                 ),
 
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(20),
-                //     // color: Colors.blueAccent,
-                //     color: Theme.of(context).primaryColor,
-                //     boxShadow: [
-                //       BoxShadow(
-                //           color: Theme.of(context).hintColor.withOpacity(0.2),
-                //           offset: Offset(0, 10),
-                //           blurRadius: 20)
-                //     ]),
               )
             ],
           )
